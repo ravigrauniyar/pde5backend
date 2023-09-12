@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     
     # Project apps
     'account',
+    'project',
 
     # 3rd party apps
     'rest_framework',
