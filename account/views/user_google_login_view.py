@@ -1,22 +1,22 @@
 import jwt
 
 from account.models import UserAccount
-from account.decorators import debug_only
-from account.authentication import AccountJWTAuthentication
 from account.utils import generate_access_token, generate_refresh_token
-from account.serializers.user_profile_serializer import  UserDetailSerailizer
+from account.serializers.user_profile_serializer import UserDetailSerailizer
+from account.serializers.google_login_serializer import GoogleLoginSerializer
 from account.services.google_services import get_google_user, validate_google_access_token
 
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes
 
-from django.http import HttpResponse
 from django.conf import settings
 
+
 class UserGoogleLoginView(APIView):
+    authentication_classes = []
+
     def post(self, request):
         """
         This function takes user request as input. Request contains access_token generated and given by google.
@@ -24,11 +24,13 @@ class UserGoogleLoginView(APIView):
         New access and refresh token is then to provided to the user in reponse.
         """
         # Get the access token from the request POST data
-        access_token = request.POST['access_token']
+        serailizer = GoogleLoginSerializer(data=request.data)
+        serailizer.is_valid(raise_exception=True)
+        access_token = serailizer.validated_data['access_token']
 
         # Validate the Google access token
         if not validate_google_access_token(access_token):
-            return HttpResponse("error: Invalid access token")
+            return Response("Invalid access token")
         
         # Retrieve user data from google using the access token
         user_data = get_google_user(access_token)
@@ -61,16 +63,15 @@ class UserGoogleLoginView(APIView):
         return response
 
 
-@authentication_classes([AccountJWTAuthentication])
-@permission_classes([IsAuthenticated])
 @api_view(["GET"])
 def profile(request):
     if request.user:
         user = request.user
         serializer = UserDetailSerailizer(user)
         return Response({"user": serializer.data})
-    return Response({'error': 'Access Token has expired'}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+@authentication_classes([])
 @api_view(["POST"])
 def refresh(request):    
     """
@@ -87,7 +88,7 @@ def refresh(request):
         )
 
     except jwt.ExpiredSignatureError:
-        return Response({'error': 'Refresh Token has expired. Please login again.'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response('Expired Refresh Token' ,status=status.HTTP_401_UNAUTHORIZED)
     
     # Retrieve the user associated with the refresh token
     user = UserAccount.objects.filter(id=payload.get("user_id"), is_active=True).first()

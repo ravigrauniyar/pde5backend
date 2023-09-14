@@ -19,7 +19,7 @@ class AccountJWTAuthentication(BaseAuthentication):
         authorization_header = request.headers.get('Authorization')
 
         if authorization_header is None:
-            return None
+            raise exceptions.PermissionDenied('No authorization header')
         
         try:
             access_token = authorization_header.split(" ")[1]
@@ -28,9 +28,8 @@ class AccountJWTAuthentication(BaseAuthentication):
             )
         
         except jwt.exceptions.ExpiredSignatureError:
-            return (None, None)
-
-        
+            raise exceptions.PermissionDenied('Expired Token')
+            
         user = User.objects.filter(id=payload['user_id']).first()
 
         if user is None:

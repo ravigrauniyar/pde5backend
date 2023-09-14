@@ -26,7 +26,6 @@ class ProjectDetailView(APIView):
         serializer = ProjectDetailSerializer(project)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-
     def put(self, request, id):
         project = ProjectService.retrieve(id)
         serializer = ProjectUpdateSerializer(data=request.data)
