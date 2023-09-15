@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from project.models import Project
+from project.models.project import Project
 
 class ProjectListSerializer(serializers.Serializer):
     id = serializers.IntegerField()

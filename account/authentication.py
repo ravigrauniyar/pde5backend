@@ -28,8 +28,12 @@ class AccountJWTAuthentication(BaseAuthentication):
             )
         
         except jwt.exceptions.ExpiredSignatureError:
-            raise exceptions.PermissionDenied('Expired Token')
-            
+            raise exceptions.ValidationError('Expired Signature')
+        
+        except jwt.InvalidSignatureError:
+            raise exceptions.ValidationError('Invalid Signature')
+
+        
         user = User.objects.filter(id=payload['user_id']).first()
 
         if user is None:

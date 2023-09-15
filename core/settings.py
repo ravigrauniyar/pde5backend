@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import os
+import datetime
 from pathlib import Path
 from decouple import config
 
@@ -92,7 +92,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pde',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
         'USER': 'pde',
         'PASSWORD': 'pde'
@@ -146,9 +146,14 @@ AUTH_USER_MODEL = 'account.UserAccount'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'account.authentication.AccountJWTAuthentication',
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = config("GOOGLE_CLIENT_SECRET")
 REDIRECT_URI = config("REDIRECT_URI")
+ACCESS_TOKEN_VALIDITY_PERIOD = datetime.timedelta(minutes=int(config("ACCESS_TOKEN_VALIDITY_PERIOD_IN_MINUTES")))
+REFRESH_TOKEN_VALIDITY_PERIOD = datetime.timedelta(minutes=int(config("REFRESH_TOKEN_VALIDITY_PERIOD_IN_MINUTES")))

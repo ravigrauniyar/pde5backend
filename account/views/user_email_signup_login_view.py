@@ -9,6 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 class UserEmailSignUpView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    
     def post(self, request):
         """
         Creates new user signing up with email.
@@ -23,6 +26,9 @@ class UserEmailSignUpView(APIView):
 
 
 class UserEmailSignInView(APIView):
+    authentication_classes = []
+    authentication_classes = []
+
     def post(self, request):
         """
         Logs in user with email and password

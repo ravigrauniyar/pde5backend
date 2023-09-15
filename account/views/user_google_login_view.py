@@ -9,14 +9,15 @@ from account.services.google_services import get_google_user, validate_google_ac
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 from django.conf import settings
 
 
 class UserGoogleLoginView(APIView):
     authentication_classes = []
-
+    permission_classes = []
+    
     def post(self, request):
         """
         This function takes user request as input. Request contains access_token generated and given by google.
@@ -71,15 +72,16 @@ def profile(request):
         return Response({"user": serializer.data})
     return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-@authentication_classes([])
 @api_view(["POST"])
+@authentication_classes([])
+@permission_classes([])
 def refresh(request):    
     """
-    This view function takes request as input. Request contains refres_token.
+    This view function takes request as input. Request contains refresh_token.
     Refresh token is checked for its validity and new access token is returned in reponse if valid.
     """
     # Get the refresh token from the request data
-    refresh_token = request.data['refresh_token']
+    refresh_token = request.data.get('refresh_token')
     try:
         # Decode the refresh token using the Django secret key
         refresh_token = refresh_token.split(" ")[1]
@@ -89,6 +91,7 @@ def refresh(request):
 
     except jwt.ExpiredSignatureError:
         return Response('Expired Refresh Token' ,status=status.HTTP_401_UNAUTHORIZED)
+
     
     # Retrieve the user associated with the refresh token
     user = UserAccount.objects.filter(id=payload.get("user_id"), is_active=True).first()

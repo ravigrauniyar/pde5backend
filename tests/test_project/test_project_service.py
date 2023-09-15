@@ -2,12 +2,10 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from project.models import Project
-from project.services import ProjectService
-from project.seriailzers import (
+from project.models.project import Project
+from project.serializers.project_seriailzer import (
     ProjectListSerializer,
     ProjectDetailSerializer,
-    ProjectUpdateSerializer,
 )
 
 @pytest.fixture

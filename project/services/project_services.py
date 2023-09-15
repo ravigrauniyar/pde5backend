@@ -1,4 +1,4 @@
-from project.models import Project
+from project.models.project import Project
 from django.shortcuts import get_object_or_404, get_list_or_404
 
 class ProjectService:

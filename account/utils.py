@@ -5,7 +5,7 @@ from django.conf import settings
 def generate_access_token(user):
     access_token_payload = {
         "user_id": user.id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=30),
+        "exp": datetime.datetime.utcnow() + settings.ACCESS_TOKEN_VALIDITY_PERIOD,
         "iat": datetime.datetime.utcnow()
     }
 
@@ -19,7 +19,7 @@ def generate_access_token(user):
 def generate_refresh_token(user):
     refresh_token_payload = {
         "user_id": user.id,
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
+        "exp": datetime.datetime.utcnow() + settings.REFRESH_TOKEN_VALIDITY_PERIOD,
         "iat": datetime.datetime.utcnow()
     }
 

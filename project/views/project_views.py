@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from project.services import ProjectService
-from project.seriailzers import ProjectDetailSerializer, ProjectListSerializer, ProjectUpdateSerializer
+from project.services.project_services import ProjectService
+from project.serializers.project_seriailzer import ProjectDetailSerializer, ProjectListSerializer, ProjectUpdateSerializer
 
 
 class ProjectListView(APIView):
