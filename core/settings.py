@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'rest_framework',
     'corsheaders',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -150,6 +151,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
@@ -157,3 +159,9 @@ GOOGLE_CLIENT_SECRET = config("GOOGLE_CLIENT_SECRET")
 REDIRECT_URI = config("REDIRECT_URI")
 ACCESS_TOKEN_VALIDITY_PERIOD = datetime.timedelta(minutes=int(config("ACCESS_TOKEN_VALIDITY_PERIOD_IN_MINUTES")))
 REFRESH_TOKEN_VALIDITY_PERIOD = datetime.timedelta(minutes=int(config("REFRESH_TOKEN_VALIDITY_PERIOD_IN_MINUTES")))
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'AI Analytics Api',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
+}

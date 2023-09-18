@@ -9,6 +9,7 @@ from account.services.google_services import get_google_user, validate_google_ac
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 from django.conf import settings
@@ -74,7 +75,7 @@ def profile(request):
 
 @api_view(["POST"])
 @authentication_classes([])
-@permission_classes([])
+@permission_classes([AllowAny])
 def refresh(request):    
     """
     This view function takes request as input. Request contains refresh_token.
