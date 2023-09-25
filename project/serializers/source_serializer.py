@@ -14,4 +14,5 @@ class SourceDetailSerializer(serializers.Serializer):
     description = serializers.CharField()
     tag = serializers.CharField()
     project_id = serializers.IntegerField()
-    token = serializers.CharField(read_only=True)
+    key = serializers.CharField(read_only=True)
+    secret = serializers.CharField(read_only=True)

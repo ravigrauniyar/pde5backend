@@ -9,22 +9,18 @@ from project.serializers.project_seriailzer import (
 )
 
 @pytest.fixture
-def api_client():
-    return APIClient()
-
-@pytest.fixture
 def sample_project():
     return Project.objects.create(title="Test Project")
 
 @pytest.mark.django_db
-def test_project_list(api_client, sample_project):
+def test_project_list_service(api_client, sample_project):
     url = reverse("project-list")
     response = api_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert response.data == ProjectListSerializer([sample_project], many=True).data
 
 @pytest.mark.django_db
-def test_create_project(api_client):
+def test_project_create_api(api_client):
     url = reverse("project-list")
     data = {"title": "New Project"}
     response = api_client.post(url, data)
@@ -32,14 +28,14 @@ def test_create_project(api_client):
     assert Project.objects.filter(title="New Project").exists()
 
 @pytest.mark.django_db
-def test_project_detail(api_client, sample_project):
+def test_project_detail_api(api_client, sample_project):
     url = reverse("project-detail", args=[sample_project.id])
     response = api_client.get(url)
     assert response.status_code == status.HTTP_200_OK
     assert response.data == ProjectDetailSerializer(sample_project).data
 
 @pytest.mark.django_db
-def test_update_project(api_client, sample_project):
+def test_update_project_api(api_client, sample_project):
     url = reverse("project-detail", args=[sample_project.id])
     data = {"title": "Updated Project"}
     response = api_client.put(url, data)

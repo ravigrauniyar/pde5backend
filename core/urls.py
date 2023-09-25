@@ -23,10 +23,10 @@ from rest_framework.permissions import AllowAny
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/account/', include('account.urls')),
-    path('api/project/',include('project.urls') ),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-docs'),
     path('api/docs/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc-docs'),
+    path('api/project/',include('project.urls') ),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 ]
 
 SpectacularSwaggerView.permission_classes = [AllowAny]

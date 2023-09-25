@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from project.services.source_services import SourceService
+from project.services.source_service import SourceService
 from project.serializers.source_serializer import SourceListSerializer, SourceDetailSerializer
 
 class SourceListView(APIView):
