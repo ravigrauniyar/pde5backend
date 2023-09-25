@@ -17,7 +17,7 @@ from django.conf import settings
 
 class UserGoogleLoginView(APIView):
     authentication_classes = []
-    permission_classes = []
+    permission_classes = [AllowAny]
     
     def post(self, request):
         """
@@ -32,7 +32,7 @@ class UserGoogleLoginView(APIView):
 
         # Validate the Google access token
         if not validate_google_access_token(access_token):
-            return Response("Invalid access token")
+            return Response("Invalid access token", status=status.HTTP_400_BAD_REQUEST)
         
         # Retrieve user data from google using the access token
         user_data = get_google_user(access_token)

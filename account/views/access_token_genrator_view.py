@@ -1,6 +1,5 @@
 # This is only for testing purposes. Will be removed after integration with frontend.
 
-import os
 import requests
 from django.conf import settings
 from account.decorators import debug_only

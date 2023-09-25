@@ -7,10 +7,11 @@ from account.serializers.email_login_signup_serializer import EmailSignInSeriali
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 class UserEmailSignUpView(APIView):
     authentication_classes = []
-    permission_classes = []
+    permission_classes = [AllowAny]
     
     def post(self, request):
         """
@@ -27,7 +28,7 @@ class UserEmailSignUpView(APIView):
 
 class UserEmailSignInView(APIView):
     authentication_classes = []
-    authentication_classes = []
+    permission_classes = [AllowAny]
 
     def post(self, request):
         """
