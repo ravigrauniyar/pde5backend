@@ -28,7 +28,7 @@ class AccountJWTAuthentication(BaseAuthentication):
             )
         
         except jwt.exceptions.ExpiredSignatureError:
-            raise exceptions.AuthenticationFailed('Expired Signature')
+            raise exceptions.PermissionDenied('Expired Signature')
         
         except jwt.InvalidSignatureError:
             raise exceptions.ValidationError('Invalid Signature')

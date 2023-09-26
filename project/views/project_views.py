@@ -21,8 +21,8 @@ class ProjectListView(APIView):
 
 
 class ProjectDetailView(APIView):
-    def get(self, request, id):
-        project = ProjectService.retrieve(id=id)
+    def get(self, request, project_id):
+        project = ProjectService.retrieve(id=project_id)
         serializer = ProjectDetailSerializer(project)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
