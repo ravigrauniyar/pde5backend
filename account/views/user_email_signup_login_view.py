@@ -35,16 +35,18 @@ class UserEmailSignInView(APIView):
         Logs in user with email and password
         """
         serializer = EmailSignInSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            password = serializer.validated_data['password']
-            user = authenticate(request, email=email, password=password)
-            if user:
-                access_token = generate_access_token(user)
-                refresh_token = generate_refresh_token(user)
-                data = {'access_token': access_token, 'refresh_token': refresh_token}
-                response = Response(data=data, status=status.HTTP_202_ACCEPTED)
-                response.set_cookie(key="refreshtoken", value=refresh_token, httponly=True)
-                return response
-            return Response("Invalid Credentials", status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
+
+        user = authenticate(request, email=email, password=password)
+
+        if user:
+            access_token = generate_access_token(user)
+            refresh_token = generate_refresh_token(user)
+            data = {'access_token': access_token, 'refresh_token': refresh_token}
+            response = Response(data=data, status=status.HTTP_202_ACCEPTED)
+            response.set_cookie(key="refreshtoken", value=refresh_token, httponly=True)
+            return response
+        
+        return Response("Invalid Username or Password", status=status.HTTP_400_BAD_REQUEST)

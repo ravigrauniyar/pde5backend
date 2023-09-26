@@ -1,6 +1,5 @@
-from datetime import datetime
-from project.models.event import Event
-from django.shortcuts import get_object_or_404
+from project.models.source import Source
+from django.shortcuts import get_list_or_404, get_object_or_404
 
 class EventService:
     def list(request):

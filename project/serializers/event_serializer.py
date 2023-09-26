@@ -1,13 +1,14 @@
 from rest_framework import serializers
-from project.models.source import Source
 
 class EventListSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     title = serializers.CharField()
+    source_name = serializers.CharField(source='source.name')
 
 class EventCreateSerializer(serializers.Serializer):
     title = serializers.CharField()
-    properties = serializers.JSONField(required=False)
+    source_id = serializers.IntegerField()
+    properties = serializers.JSONField()
 
 class EventDetailSerializer(serializers.Serializer):
     id = serializers.IntegerField()
