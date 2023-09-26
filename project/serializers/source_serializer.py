@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from project.models.source import Source
 
 class SourceListSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
