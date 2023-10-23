@@ -1,16 +1,23 @@
+import datetime
 from project.models.source import Source
 from django.shortcuts import get_list_or_404, get_object_or_404
+from project.models.event import Event
+from django.db.models import Q
 
 class EventService:
     def list(request):
-        source_filter = request.query_params.get('source', None)
+        source_filters = request.GET.getlist('source')
         start_datetime = request.GET.get('start_datetime')
         end_datetime = request.GET.get('end_datetime')
         
         queryset = Event.objects.all()
         
-        if source_filter:
-            queryset = queryset.filter(source__name__icontains=source_filter)
+        if source_filters:
+            source_filter_q = Q()
+            for source_filter in source_filters:
+                source_filter_q |= Q(source__name__icontains=source_filter)
+            
+            queryset = queryset.filter(source_filter_q)
 
         if start_datetime:
             queryset = queryset.filter(properties__timestamp__gte=start_datetime)
